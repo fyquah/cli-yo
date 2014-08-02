@@ -2,14 +2,13 @@ require "rest_client"
 require "json"
 YO_URL = "http://api.justyo.co/yo/"
 
-class Yo_Error < StandardError
-	def initialize error , code = nil
-		@error = error
-		@code = code
+module Cli_Yo
+	class Yo_Error < StandardError
+		def initialize error , code = nil
+			@error = error
+			@code = code
+		end
 	end
-end
-
-module Properties
 
 	@arguments = Hash.new
 	@short_cut_mapping = {
@@ -86,7 +85,4 @@ module Properties
 		end
 		"#{n}-#{suffix}"
 	end
-
-	initialize_arguments
-
 end

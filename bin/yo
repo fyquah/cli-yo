@@ -1,7 +1,10 @@
-#!/usr/bin/ruby
-require "./properties.rb"
+#!/usr/bin/env ruby
 
-unless Properties.api_token
+require "cli_yo"
+
+Cli_Yo.initialize_arguments
+
+unless Cli_Yo.api_token
 	puts "YO api_token not found! Please add the following line to your ~/.bashrc file! or include it in your arguments"
 	puts "export $YO_TOKEN= <yo token obtained from api website> "
 	exit
@@ -9,19 +12,19 @@ end
 
 background_yo_process = fork do
 	begin
-		counter = Properties.count
+		counter = Cli_Yo.count
 		until counter == 0
-			result = RestClient.post YO_URL , {username: Properties.username , api_token: Properties.api_token}
+			result = RestClient.post YO_URL , {username: Cli_Yo.username , api_token: Cli_Yo.api_token}
 			result = JSON.parse result , symbolize_names: true
 
-			raise Yo_Error.new(result[:error] , result[:code]) if result[:code] || result[:error]
+			raise Cli_Yo::Yo_Error.new(result[:error] , result[:code]) if result[:code] || result[:error]
 
-			puts "\nYo-ed #{Properties.username} ! This is the #{Properties.consecutive_counter counter} Yo!" unless Properties.silent
-			sleep Properties.interval  #Yo allows at most 1 minutes once!
+			puts "\nYo-ed #{Cli_Yo.username} ! This is the #{Cli_Yo.consecutive_counter counter} Yo!" unless Cli_Yo.silent
+			sleep Cli_Yo.interval  #Yo allows at most 1 minutes once!
 			counter -= 1
 		end
 
-		unless Properties.complete_silent
+		unless Cli_Yo.complete_silent
 			puts "\nCompleted your Yo-es with ultimate awesomeness!"
 			puts "Add the --complete_silent option if you don't want this message to pop up!"
 		end
