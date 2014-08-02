@@ -19,11 +19,11 @@ module Properties
 	@short_cut_mapping = {
 		s: :silent,
 		a: :api_token,
-		c: :count
+		c: :count , 
+		i: :interval
 	}
-	@all_properties = [:silent , :count , :username , :api_token];
-	@numeric_properties = [:count];
-	@all_properties.sort!
+	@all_properties = [:silent , :count , :username , :api_token , :interval , :complete_silent];
+	@numeric_properties = [:count , :interval];
 
 	class << self
 		attr_reader :arguments
@@ -54,7 +54,13 @@ module Properties
 		@numeric_properties.each do |key|
 			@arguments[key] = @arguments[key].to_i if @arguments[key]
 		end
+
+		# Granting some default values
 		@arguments[:count] ||= 1
+		@arguments[:interval] = 60.0 unless @arguments[:interval] && @arguments[:interval] > 60.0
+
+		@arguments[:silent] = true if @arguments[:complete_silent]
+		# @arguments[:interval] = 1 if  @arguments[:interval] < 1
 	end
 
 	def self.method_missing method , *args
@@ -68,6 +74,21 @@ module Properties
 		else
 			@arguments[reference_symbol]
 		end
+	end
+
+	def self.consecutive_counter counter
+		n = self.count - counter + 1
+		suffix = "th"
+		unless n < 10 || n.to_s[-2] == '1'
+			if n.to_s[-1] == '1'
+				suffix = "st"
+			elsif n.to_s[-1] == '2'
+				suffix = "nd"
+			elsif n.to_s[-1] == '3'
+				suffix = 'rd'
+			end
+		end
+		"#{n}-#{suffix}"
 	end
 
 	initialize_arguments
