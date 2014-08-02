@@ -3,10 +3,18 @@ require "json"
 YO_URL = "http://api.justyo.co/yo/"
 
 module Cli_Yo
-	class Yo_Error < StandardError
+	class Yo_Error < Exception
 		def initialize error , code = nil
 			@error = error
 			@code = code
+		end
+
+		def to_s
+			if @code
+				"Error code #{@code} => #{@error}"
+			else
+				@error
+			end
 		end
 	end
 
@@ -26,7 +34,7 @@ module Cli_Yo
 
 	def self.initialize_arguments
 		#Since username should be the first argument
-		raise "No username given" if ARGV[0] =~ /\A--/ || ARGV[0] =~ /\A-/ || ARGV.size == 0
+		raise Yo_Error.new("No username provided in argument!") if ARGV[0] =~ /\A--/ || ARGV[0] =~ /\A-/ || ARGV.size == 0
 		reference_symbol = :username;
 		ARGV.each do |argv|
 
@@ -40,11 +48,11 @@ module Cli_Yo
 				@arguments[reference_symbol] = argv
 			end
 
-			raise "Unkown property #{reference_symbol}" unless @all_properties.include? reference_symbol
+			raise Yo_Error.new("Unkown property #{reference_symbol} provided as argument!") unless @all_properties.include? reference_symbol
 		end
 
 		@arguments[:api_token] ||= `echo $YO_TOKEN`.chomp
-		raise "Do not know yo token" unless @arguments[:api_token]
+		raise Yo_Error.new("Do not have Yo! Api Token!") unless @arguments[:api_token]
 
 		@numeric_properties.each do |key|
 			@arguments[key] = @arguments[key].to_i if @arguments[key]
