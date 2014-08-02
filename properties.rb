@@ -1,5 +1,17 @@
 require "rest_client"
+require "json"
 YO_URL = "http://api.justyo.co/yo/"
+
+class Yo_Error
+	def initialize error , code = nil
+		@error = error
+		@code = code
+	end
+
+	def to_s
+		"#{@error}\nError code => #{@code}" if @code
+	end
+end
 
 module Properties
 
@@ -19,7 +31,7 @@ module Properties
 
 	def self.initialize_arguments
 		#Since username should be the first argument
-		raise "No username given" if ARGV[0] =~ /\A--/ || ARGV[0] =~ /\A-/	
+		raise "No username given" if ARGV[0] =~ /\A--/ || ARGV[0] =~ /\A-/ || ARGV.size == 0
 		reference_symbol = :username;
 		ARGV.each do |argv|
 
@@ -37,12 +49,12 @@ module Properties
 		end
 
 		@arguments[:api_token] ||= `echo $YO_TOKEN`.chomp
-		raise "Do not know yo token" unless @arguments[:username]
+		raise "Do not know yo token" unless @arguments[:api_token]
 
 		@numeric_properties.each do |key|
-			@arguments[key].to_i! if @arguments[key]
+			@arguments[key] = @arguments[key].to_i if @arguments[key]
 		end
-
+		@arguments[:count] ||= 1
 	end
 
 	def self.method_missing method , *args
@@ -59,9 +71,5 @@ module Properties
 	end
 
 	initialize_arguments
-
-	@arguments.each do |hash , val|
-		puts "#{hash} => #{val}"
-	end
 
 end
