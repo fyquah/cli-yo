@@ -14,7 +14,8 @@ background_yo_process = fork do
 			result = RestClient.post YO_URL , {username: Properties.username , api_token: Properties.api_token}
 			result = JSON.parse result , symbolize_names: true
 
-			raise Yo_Error result[:error] , result[:code] if result[:code] || result[:error]
+			raise Yo_Error.new(result[:error] , result[:code]) if result[:code] || result[:error]
+
 			puts "\nYo-ed #{Properties.username} ! This is the #{Properties.consecutive_counter counter} Yo!" unless Properties.silent
 			sleep Properties.interval  #Yo allows at most 1 minutes once!
 			counter -= 1
@@ -26,8 +27,8 @@ background_yo_process = fork do
 		end
 
 		exit
-	catch
-		puts Yo_Error
+	rescue Yo_Error => err
+		puts err
 	end	
 end
 

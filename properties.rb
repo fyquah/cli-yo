@@ -2,14 +2,10 @@ require "rest_client"
 require "json"
 YO_URL = "http://api.justyo.co/yo/"
 
-class Yo_Error
+class Yo_Error < StandardError
 	def initialize error , code = nil
 		@error = error
 		@code = code
-	end
-
-	def to_s
-		"#{@error}\nError code => #{@code}" if @code
 	end
 end
 
@@ -79,7 +75,7 @@ module Properties
 	def self.consecutive_counter counter
 		n = self.count - counter + 1
 		suffix = "th"
-		unless n < 10 || n.to_s[-2] == '1'
+		unless (n >= 10 && n <= 20) || n.to_s[-2] == '1'
 			if n.to_s[-1] == '1'
 				suffix = "st"
 			elsif n.to_s[-1] == '2'
