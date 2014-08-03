@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
 	s.name = "cli_yo"
 	s.executables << "cli-yo"
-	s.version = "0.0.0"
-	s.date = "2014-08-02"
+	s.version = "0.0.1"
+	s.date = "2014-08-03"
 	s.summary = "A command line interface to send Yo!"
 	s.description = "You can Yo anyone, while writing your magnificent code. The best part, you don't need to do anything! "
 	s.author = "FY Quah"
