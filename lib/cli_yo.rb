@@ -26,7 +26,7 @@ module Cli_Yo
 					raise Yo_Error.new "Missing mandatory argument #{prop}" unless arguments.property_is_set? (prop)
 				end
 
-				puts "Going to start yo-ing #{Helper::beautiful_sentence(arguments.usernames)}"
+				puts "Going to start yo-ing #{Helper.beautiful_sentence(arguments.usernames)}"
 
 				Process.daemon(true) if arguments.silent
 				counter = arguments.times
