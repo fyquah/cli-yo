@@ -1,50 +1,28 @@
 #!/usr/bin/env ruby
 
-require "cli_yo"
+require "mercenary"
 
-begin
-	Cli_Yo.initialize_arguments
-rescue Cli_Yo::Yo_Error => err
-	puts err
-	exit
+Mercenary.program(:cliYo) do |p|
+  p.description 'CliYo is a program which can send Yo!s from the command line, at regular intervals'
+  p.syntax "cli-yo <all your friends you wanna yo!> [options]"
+  p.version "0.0.1"
+
+  p.description "yo your friends from the command line"
+  p.option 'silent', "-s" , '--silent', 'silently yo your friend while you proceed with your work!'
+  p.option "times" , "-t COUNT" , "--times COUNT" , "how many times do you want to yo! your friend, defaults to 1"
+  p.option "interval" , "-i INTERVAL" , "--interval INTERVAL" , "how often do you want to yo! your friend (in minutes) , defaults to 1"
+  p.option "api_token" , "-a TOKEN" , "--api_token TOKEN" , "Write your api_token (or add it inside .bashrc file)"
+
+  p.action do |args , options|
+    require "./cli_yo.rb"
+    options = options.inject({}){ |memo , (key , value)| memo[key.to_sym] = value ; memo}
+  	options[:usernames] = args
+
+    Cli_Yo.numeric_properties.each do |prop|
+      options[prop] = options[prop].to_i if options[prop]
+    end
+    
+    Cli_Yo.yo! options
+
+  end
 end
-
-unless Cli_Yo.api_token
-	puts "YO api_token not found! Please add the following line to your ~/.bashrc file! or include it in your arguments"
-	puts "export $YO_TOKEN= <yo token obtained from api website> "
-	exit
-end
-
-background_yo_process = fork do
-	begin
-		counter = Cli_Yo.count
-		loop do
-			result = RestClient.post YO_URL , {username: Cli_Yo.username , api_token: Cli_Yo.api_token}
-			result = JSON.parse result , symbolize_names: true
-
-			raise Cli_Yo::Yo_Error.new(result[:error] , result[:code]) if result[:code] || result[:error]
-
-			puts "\nYo-ed #{Cli_Yo.username} ! This is the #{Cli_Yo.consecutive_counter counter} Yo!" unless Cli_Yo.silent
-			counter -= 1
-			break if counter <= 0
-			sleep Cli_Yo.interval  #Yo allows at most 1 minutes once!
-		end
-
-		unless Cli_Yo.complete_silent
-			puts "\nCompleted your Yo-es with ultimate awesomeness!"
-			puts "Add the --complete_silent option if you don't want this message to pop up!"
-		end
-	rescue Yo_Error => err
-		puts err
-		f = File.new("~/cli.log" , "w")
-		f.write(err)
-		f.close
-	rescue Exception => e
-		puts "Oops , looks like an error has occured!"
-		f = File.new("~/cli.log" , "w")
-		f.write(end)
-		f.close
-	end	
-end
-
-Process.detach background_yo_process
