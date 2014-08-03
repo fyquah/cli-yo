@@ -116,11 +116,3 @@ module Cli_Yo
 
 end
 
-args = {
-	count: 5,
-	silent: false,
-	username: 'fyquah95' ,
-	interval: 2
-}
-Cli_Yo.yo! args
-
