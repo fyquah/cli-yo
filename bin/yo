@@ -14,7 +14,7 @@ Mercenary.program(:cliYo) do |p|
   p.option "api_token" , "-a TOKEN" , "--api_token TOKEN" , "Write your api_token (or add it inside .bashrc file)"
 
   p.action do |args , options|
-    require "./cli_yo.rb"
+    require "cli_yo"
     options = options.inject({}){ |memo , (key , value)| memo[key.to_sym] = value ; memo}
   	options[:usernames] = args
 
