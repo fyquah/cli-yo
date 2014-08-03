@@ -19,7 +19,6 @@ module Cli_Yo
 
 			raise Yo_Error.new "invalid arguments class provided!" unless arguments.class == Hash || arguments.class == Yo_Arguments
 			arguments = Yo_Arguments.new arguments if arguments.class == Hash
-			p arguments
 			begin
 
 				raise Yo_Error.new "Noone to yo!" if arguments.usernames.size == 0
@@ -28,7 +27,6 @@ module Cli_Yo
 				end
 
 				puts "Going to start yo-ing #{Helper::beautiful_sentence(arguments.usernames)}"
-				puts "Pid of current Process is #{Process.pid} "
 
 				Process.daemon(true) if arguments.silent
 				counter = arguments.times
