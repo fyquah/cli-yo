@@ -9,13 +9,20 @@ Mercenary.program(:cliYo) do |p|
 
   p.description "yo your friends from the command line"
   p.option 'silent', "-s" , '--silent', 'silently yo your friend while you proceed with your work!'
-  p.option "count" , "-c COUNT" , "--count COUNT" , "how many times do you want to yo! your friend, defaults to 1"
+  p.option "times" , "-t COUNT" , "--times COUNT" , "how many times do you want to yo! your friend, defaults to 1"
   p.option "interval" , "-i INTERVAL" , "--interval INTERVAL" , "how often do you want to yo! your friend (in minutes) , defaults to 1"
-  
-  p.action do |args , options|
-  	require "./cli_yo.rb"
-  	options[:username] = args
-  	Cli_Yo.yo! options
-  end
+  p.option "api_token" , "-a TOKEN" , "--api_token TOKEN" , "Write your api_token (or add it inside .bashrc file)"
 
+  p.action do |args , options|
+    require "./cli_yo.rb"
+    options = options.inject({}){ |memo , (key , value)| memo[key.to_sym] = value ; memo}
+  	options[:usernames] = args
+
+    Cli_Yo.numeric_properties.each do |prop|
+      options[prop] = options[prop].to_i if options[prop]
+    end
+    
+    Cli_Yo.yo! options
+
+  end
 end
