@@ -53,7 +53,7 @@ Add the following lines to your site's server side source:
 ```ruby
 # Inside part of your code that gets trigger whenever someone visits the site
 require "cli_yo"
-Cli_Yo.yo! {username: your_user_name , api_token: your_api_token}
+Cli_Yo.yo! {usernames: [your_user_name , your_other_user_name] , api_token: your_api_token}
 # Next part of your code
 ```
 
@@ -76,3 +76,15 @@ Show this message
 `-v, --version`
 Print the name and version
 
+## Arguments for Cli_Yo.yo! method
+
+```ruby
+require "cli_yo" #loads the Cli_Yo module
+Cli_Yo.yo!(arguments_hash)
+```
+
+* `silent` boolean true or false/nil to indicate whether the process runs in the background
+* `times` integer specifying the number of times
+* `interval` Fixed Number specifying the interval between each Yo-es (in minutes)!
+* `api_token` String specifying the API token. defaults to `echo $YO_TOKEN`
+* `usernames` array containing the usernames of the users you wish to yo!
