@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 	s.name = "cli_yo"
-	s.executables << "yo"
+	s.executables << "cli-yo"
 	s.version = "0.0.0"
 	s.date = "2014-08-02"
 	s.summary = "A command line interface to send Yo!"
@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
 	s.email = "quah.fy95@gmail.com"
 	s.add_runtime_dependency "rest-client" , "1.7.2"
 	s.add_runtime_dependency "json" , "1.8.1"
-	s.files = ["./lib/cli_yo.rb" , "./bin/yo"]
+	s.add_runtime_dependency "mercenary" , "0.3.4"
+	s.files = ["lib/cli_yo.rb" , "lib/cli_yo/helper.rb" , "lib/cli_yo/yo_arguments.rb" , "lib/cli_yo/yo_error.rb" , "bin/cli-yo"]
 	s.homepage = 'https://github.com/fyquah95/cli-yo/'
 end
