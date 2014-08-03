@@ -1,4 +1,7 @@
-# Usage Guide
+# Introduction
+
+A ruby gem, which allows you to yo! your friends from the command line automatically.
+And if you want to, you can always include it in your code.
 
 ## Installing
 * Install the gem with `gem install cli_yo`
@@ -22,3 +25,8 @@
 
 ### Want to use another api token to yo! ?
 `cli-yo my_good_friend --api_token <some_other_token> `
+
+### Want to get yo!-ed when someone visits your site?
+Add the following lines to your site's server side source:
+`require "cli_yo"`
+`Cli_Yo::yo! {username: your_user_name , api_token: your_api_token}`
