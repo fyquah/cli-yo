@@ -60,14 +60,19 @@ Cli_Yo.yo! {username: your_user_name , api_token: your_api_token}
 ## Command Line Options
 `-s, --silent `
 silently yo your friend while you proceed with your work! You won't be disturbed even in the terminal!
+
 `-t COUNT, --times COUNT`
 how many times do you want to yo! your friend, defaults to 1
+
 `-i INTERVAL, --interval INTERVAL `
 how often do you want to yo! your friend (in minutes) , defaults to 1
+
 `-a TOKEN, --api_token TOKEN`
-Write your api_token (or add it inside .bashrc file)
+Write your api_token (or add it inside .bashrc file [refer above])
+
 `-h, --help`
 Show this message
+
 `-v, --version`
 Print the name and version
 
