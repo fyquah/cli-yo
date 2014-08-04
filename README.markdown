@@ -13,6 +13,16 @@ And if you want to, you can always include it in your code.
 `export YO_TOKEN="<YO-API-TOKEN>"`
 * You are good to go!
 
+## Optional Configuration
+* in case you prefer typing yo .. than cli-yo .. , add the following line to your ~/.bashrc
+```bash
+function yo {
+	cli-yo $@
+}
+```
+* Then , run the following command in your terminal `source ~/.bashrc`
+* use yo instead of cli-yo!
+
 ## Usage
 ### Format:
 ```
@@ -88,3 +98,6 @@ Cli_Yo.yo!(arguments_hash)
 * `interval` Fixed Number specifying the interval between each Yo-es (in minutes)!
 * `api_token` String specifying the API token. defaults to `echo $YO_TOKEN`
 * `usernames` array containing the usernames of the users you wish to yo!
+
+# Licence
+MIT
